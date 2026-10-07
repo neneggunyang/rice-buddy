@@ -10,7 +10,7 @@ header{text-align:center;padding:30px 20px 22px;background:linear-gradient(#fffa
 nav{display:flex;background:#fff;border-bottom:1px solid var(--line)}nav button{flex:1;border:0;background:none;padding:13px 5px;color:var(--muted);font-size:13px}nav button.active{color:var(--ink);font-weight:700;border-bottom:2px solid var(--accent)}
 main{padding:20px}.screen{display:none}.screen.active{display:block}.hero{text-align:center;padding:22px 8px 26px}.hero h2{font-family:Georgia,serif;font-size:23px;margin:5px 0 9px}.hero p{color:var(--muted);font-size:14px;line-height:1.7}
 .primary{width:100%;border:0;border-radius:12px;padding:14px;background:var(--ink);color:#fff;font-weight:700;margin-top:10px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px;margin-bottom:12px}.title{font-weight:800;margin-bottom:12px}
-label{display:block;font-size:13px;font-weight:700;margin:15px 0 7px}input,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fffdfb;outline:none}textarea{min-height:78px;resize:vertical}.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.choice button{border:1px solid var(--line);background:#fffaf5;border-radius:10px;padding:11px 8px;color:var(--ink)}.choice button.selected{border:2px solid var(--accent);background:#fff0df}
+label{display:block;font-size:13px;font-weight:700;margin:15px 0 7px}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fffdfb;outline:none}textarea{min-height:78px;resize:vertical}.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.choice button{border:1px solid var(--line);background:#fffaf5;border-radius:10px;padding:11px 8px;color:var(--ink)}.choice button.selected{border:2px solid var(--accent);background:#fff0df}
 .actions{display:flex;gap:8px;margin-top:15px}.secondary{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px}.primary.small{flex:2;width:auto;margin:0}.record{display:flex;gap:12px;padding:13px 0;border-top:1px solid var(--line)}.date{width:58px;text-align:center;flex:none}.date b{display:block;font-size:18px}.date small,.meta{color:var(--muted)}.record-body{flex:1}.meal{font-size:12px;color:var(--accent);font-weight:700}.record-title{font-weight:800;margin:3px 0}.memo{font-size:13px;color:#615850;margin-top:6px;line-height:1.5}.empty{text-align:center;padding:35px 15px;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 7px;text-align:center}.stat b{display:block;font-size:19px}.stat span{font-size:11px;color:var(--muted)}.random{background:#fff0df;border:1px solid var(--line);border-radius:14px;padding:20px;text-align:center;margin-top:15px}.random .emoji{font-size:28px}.random h3{font-family:Georgia,serif;margin:7px 0}
 .record-actions{display:flex;gap:6px;margin-top:9px}.record-actions button{border:1px solid var(--line);background:#fffaf5;border-radius:7px;padding:5px 9px;font-size:11px;color:var(--muted)}.record-actions button.delete{color:#b36b58}.link{display:inline-block;margin-top:6px;color:var(--accent);font-size:12px;text-decoration:none}.back{border:0;background:none;padding:0;color:var(--muted);font-size:13px;margin-bottom:12px}
@@ -32,16 +32,19 @@ label{display:block;font-size:13px;font-weight:700;margin:15px 0 7px}input,texta
 .bar-fill{height:100%;background:var(--accent);border-radius:99px}
 </style></head>
 <body><div class="app">
-<header><div class="bowl">🍚</div><h1>밥친구</h1><div class="sub">오늘 밥 먹으면서 무엇을 함께했나요?</div></header>
+<header><div class="bowl">🍚</div><h1>밥친구</h1><div class="sub">오늘도 밥친구와 함께 맛밥😋</div></header>
 <nav><button class="active" data-tab="home">오늘</button><button data-tab="records">기록</button><button data-tab="stats">통계</button></nav>
 <main>
-<section id="home" class="screen active"><div class="hero"><h2>오늘의 밥친구를 기록해요</h2><p>밥 먹으며 본 것, 들은 것, 읽은 것을<br>10초 만에 남겨두세요.</p><button class="primary" onclick="start()">🍚 밥친구 기록하기</button></div><div id="today"></div></section>
+<section id="home" class="screen active"><div class="hero"><h2>오늘의 밥친구를 기록해요</h2><p>밥 먹으며 본 것들을<br>10초 만에 남겨보세요.</p><button class="primary" onclick="start()">🍚 밥친구 기록하기</button></div><div id="today"></div></section>
 <section id="form" class="screen"><button class="back" onclick="show('home')">← 오늘로</button>
-<div class="card"><div class="title">🍚 어떤 식사였나요?</div><div class="choice" data-key="meal"><button>🍳 아침</button><button>🍚 점심</button><button>🌙 저녁</button><button>🍪 간식</button></div>
-<label>무엇을 함께했나요?</label><div class="choice" data-key="type"><button>▶️ 유튜브</button><button>🎬 영화</button><button>📺 드라마</button><button>🎞️ 애니메이션</button><button>✨ 기타</button></div>
+<div class="card"><div class="title">🍚 어떤 식사였나요?</div>
+<label>식사 날짜</label><input id="recordDate" type="date">
+<div class="choice" data-key="meal"><button>🍳 아침</button><button>🍚 점심</button><button>🌙 저녁</button><button>🍪 간식</button><button>🍜 야식</button></div>
+<label>함께 먹은 메뉴</label><input id="menu" placeholder="예: 김치찌개, 햄버거, 라면">
+<label>어떤 친구와 함께했나요?</label><div class="choice" data-key="type"><button>▶️ 유튜브</button><button>🎬 영화</button><button>📺 드라마</button><button>🎞️ 애니메이션</button><button>✨ 기타</button></div>
 <label>제목</label><input id="title" placeholder="예: 이상한 변호사 우영우 2화">
-<label>플랫폼 <span style="font-weight:400;color:#999">(선택)</span></label>
-<input id="platform" placeholder="예: YouTube · Netflix · 왓챠">
+<label>플랫폼</label>
+<select id="platform"><option value="">선택안함</option><option value="Netflix">Netflix</option><option value="YouTube">YouTube</option><option value="TV">TV</option><option value="Watcha">Watcha</option><option value="라프텔">라프텔</option><option value="티빙">티빙</option><option value="웨이브">웨이브</option><option value="쿠팡플레이">쿠팡플레이</option><option value="기타">기타</option></select>
 <label>링크 <span style="font-weight:400;color:#999">(선택)</span></label>
 <input id="url" type="url" placeholder="영상·작품 링크를 붙여넣을 수 있어요">
 <label>리뷰</label>
@@ -67,7 +70,7 @@ document.querySelectorAll('.star').forEach(b=>b.onclick=()=>{rating=Number(b.dat
 document.querySelectorAll('.choice').forEach(g=>g.onclick=e=>{if(e.target.tagName!=='BUTTON')return;g.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));e.target.classList.add('selected');answers[g.dataset.key]=e.target.textContent});
 function start(){
 editingId=null;answers={};rating=0;
-$('title').value='';$('platform').value='';$('url').value='';$('memo').value='';
+$('title').value='';$('menu').value='';$('platform').value='';$('url').value='';$('memo').value='';$('recordDate').value=new Date().toLocaleDateString('sv-SE');
 $('ratingText').textContent='별점을 선택해주세요.';
 $('saveBtn').textContent='기록하기 🍚';
 document.querySelectorAll('.choice button').forEach(b=>b.classList.remove('selected'));
@@ -76,8 +79,8 @@ show('form');
 }
 function editRecord(id){
 const r=records.find(x=>x.id===id);if(!r)return;
-editingId=id;answers={meal:r.meal,type:r.type};rating=r.rating||0;
-$('title').value=r.title||'';$('platform').value=r.platform||'';$('url').value=r.url||'';$('memo').value=r.memo||'';
+editingId=id;answers={meal:r.meal,type:r.type};rating=r.rating||0;$('recordDate').value=new Date(r.date).toLocaleDateString('sv-SE');
+$('title').value=r.title||'';$('menu').value=r.menu||'';$('platform').value=r.platform||'';$('url').value=r.url||'';$('memo').value=r.memo||'';
 $('ratingText').textContent=rating?rating+'점':'별점을 선택해주세요.';
 document.querySelectorAll('.choice').forEach(g=>g.querySelectorAll('button').forEach(b=>b.classList.toggle('selected',b.textContent===(g.dataset.key==='meal'?r.meal:r.type))));
 document.querySelectorAll('.star').forEach(b=>b.style.color=Number(b.dataset.star)<=rating?'var(--accent)':'#d8cfc7');
@@ -92,14 +95,14 @@ function saveRecord(){
 if(!answers.meal)return alert('식사를 선택해주세요.');
 if(!answers.type)return alert('함께한 매체를 선택해주세요.');
 if(!$('title').value.trim()){alert('제목을 적어주세요.');return}
-const data={meal:answers.meal,type:answers.type,title:$('title').value.trim(),platform:$('platform').value.trim(),url:$('url').value.trim(),rating,memo:$('memo').value.trim()};
+const selectedDate=$('recordDate').value;if(!selectedDate){alert('식사 날짜를 선택해주세요.');return} const data={meal:answers.meal,type:answers.type,menu:$('menu').value.trim(),title:$('title').value.trim(),platform:$('platform').value.trim(),url:$('url').value.trim(),rating,memo:$('memo').value.trim()};
 if(editingId!==null){const r=records.find(x=>x.id===editingId);if(r)Object.assign(r,data);}
-else records.unshift({id:Date.now(),date:new Date().toISOString(),...data});
+else {const [y,m,d]=selectedDate.split('-').map(Number);records.unshift({id:Date.now(),date:new Date(y,m-1,d,12,0,0).toISOString(),...data});}
 save();editingId=null;show('home');
 }
 function dp(iso){let d=new Date(iso);return{m:d.getMonth()+1,day:d.getDate(),full:d.toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'})}}
 function renderToday(){let t=new Date().toDateString(),a=records.filter(r=>new Date(r.date).toDateString()===t);$('today').innerHTML=a.length?'<div class="card"><div class="title">오늘의 밥친구</div>'+a.map(card).join('')+'</div>':'<div class="empty">아직 오늘의 밥친구가 없어요.<br>첫 번째 밥친구를 기록해볼까요? 🍚</div>'}
-function card(r){let d=dp(r.date);let stars=r.rating?' <span style="color:var(--accent);letter-spacing:1px">'+('★'.repeat(r.rating))+'</span>':'';let platform=r.platform?' · '+esc(r.platform):'';let link=r.url&&/^https?:\/\//i.test(r.url)?'<a class="link" href="'+esc(r.url)+'" target="_blank" rel="noopener">🔗 링크 열기</a>':'';return '<div class="record"><div class="date"><b>'+d.day+'</b><small>'+d.m+'월</small></div><div class="record-body"><div class="meal">'+esc(r.meal)+' · '+esc(r.type)+platform+'</div><div class="record-title">'+esc(r.title)+stars+'</div>'+link+(r.memo?'<div class="memo">'+esc(r.memo)+'</div>':'')+'<div class="record-actions"><button onclick="editRecord('+r.id+')">✏️ 수정</button><button class="delete" onclick="deleteRecord('+r.id+')">🗑 삭제</button></div></div></div>'}
+function card(r){let d=dp(r.date);let stars=r.rating?' <span style="color:var(--accent);letter-spacing:1px">'+('★'.repeat(r.rating))+'</span>':'';let platform=r.platform?' · '+esc(r.platform):'';let link=r.url&&/^https?:\/\//i.test(r.url)?'<a class="link" href="'+esc(r.url)+'" target="_blank" rel="noopener">🔗 링크 열기</a>':'';return '<div class="record"><div class="date"><b>'+d.day+'</b><small>'+d.m+'월</small></div><div class="record-body"><div class="meal">'+esc(r.meal)+' · '+esc(r.type)+platform+'</div><div class="record-title">'+esc(r.title)+stars+'</div>'+(r.menu?'<div class="memo">🍴 '+esc(r.menu)+'</div>':'')+link+(r.memo?'<div class="memo">'+esc(r.memo)+'</div>':'')+'<div class="record-actions"><button onclick="editRecord('+r.id+')">✏️ 수정</button><button class="delete" onclick="deleteRecord('+r.id+')">🗑 삭제</button></div></div></div>'}
 
 let calendarDate=new Date();
 
@@ -125,23 +128,25 @@ function renderCalendar(){
 }
 function changeMonth(n){calendarDate.setMonth(calendarDate.getMonth()+n);renderCalendar();}
 
-function renderRecords(){if(!records.length){$('recordList').innerHTML='<div class="empty">아직 기록이 없어요.<br>밥 먹으면서 함께한 것을 남겨보세요. 🍚</div>';return}let g={};records.forEach(r=>{let k=dp(r.date).full;(g[k]??=[]).push(r)});$('recordList').innerHTML=Object.entries(g).map(([d,a])=>'<div class="card"><div class="title">'+d+'</div>'+a.map(r=>'<div class="record"><div class="record-body"><div class="meal">'+esc(r.meal)+' · '+esc(r.type)+(r.platform?' · '+esc(r.platform):'')+'</div><div class="record-title">'+esc(r.title)+(r.rating?' <span style="color:var(--accent);letter-spacing:1px">'+('★'.repeat(r.rating))+'</span>':'')+'</div>'+(r.url&&/^https?:\/\//i.test(r.url)?'<a class="link" href="'+esc(r.url)+'" target="_blank" rel="noopener">🔗 링크 열기</a>':'')+(r.memo?'<div class="memo">'+esc(r.memo)+'</div>':'')+'<div class="record-actions"><button onclick="editRecord('+r.id+')">✏️ 수정</button><button class="delete" onclick="deleteRecord('+r.id+')">🗑 삭제</button></div></div></div>').join('')+'</div>').join('')}
+function renderRecords(){if(!records.length){$('recordList').innerHTML='<div class="empty">아직 기록이 없어요.<br>밥 먹으면서 함께한 것을 남겨보세요. 🍚</div>';return}let g={};records.forEach(r=>{let k=dp(r.date).full;(g[k]??=[]).push(r)});$('recordList').innerHTML=Object.entries(g).map(([d,a])=>'<div class="card"><div class="title">'+d+'</div>'+a.map(r=>'<div class="record"><div class="record-body"><div class="meal">'+esc(r.meal)+' · '+esc(r.type)+(r.platform?' · '+esc(r.platform):'')+'</div><div class="record-title">'+esc(r.title)+(r.rating?' <span style="color:var(--accent);letter-spacing:1px">'+('★'.repeat(r.rating))+'</span>':'')+'</div>'+(r.menu?'<div class="memo">🍴 '+esc(r.menu)+'</div>':'')+(r.url&&/^https?:\/\//i.test(r.url)?'<a class="link" href="'+esc(r.url)+'" target="_blank" rel="noopener">🔗 링크 열기</a>':'')+(r.memo?'<div class="memo">'+esc(r.memo)+'</div>':'')+'<div class="record-actions"><button onclick="editRecord('+r.id+')">✏️ 수정</button><button class="delete" onclick="deleteRecord('+r.id+')">🗑 삭제</button></div></div></div>').join('')+'</div>').join('')}
 function renderStats(){
-let types={},platforms={},meals={};
+let types={},platforms={},meals={},menus={};
 records.forEach(r=>{
   types[r.type]=(types[r.type]||0)+1;
   if(r.platform) platforms[r.platform]=(platforms[r.platform]||0)+1;
   meals[r.meal]=(meals[r.meal]||0)+1;
+  if(r.menu) menus[r.menu]=(menus[r.menu]||0)+1;
 });
 let top=Object.entries(types).sort((a,b)=>b[1]-a[1])[0];
 let topPlatform=Object.entries(platforms).sort((a,b)=>b[1]-a[1])[0];
 let days=new Set(records.map(r=>new Date(r.date).toDateString())).size;
 let rated=records.filter(r=>r.rating),avg=rated.length?(rated.reduce((a,r)=>a+r.rating,0)/rated.length).toFixed(1):'-';
-let maxType=Math.max(1,...Object.values(types)),maxPlatform=Math.max(1,...Object.values(platforms)),maxMeal=Math.max(1,...Object.values(meals));
+let maxType=Math.max(1,...Object.values(types)),maxPlatform=Math.max(1,...Object.values(platforms)),maxMeal=Math.max(1,...Object.values(meals)),maxMenu=Math.max(1,...Object.values(menus));
 let typeBars=Object.entries(types).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<div class="bar-row"><span>'+esc(k)+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/maxType*100)+'%"></div></div><b>'+v+'</b></div>').join('');
 let platformBars=Object.entries(platforms).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<div class="bar-row"><span>'+esc(k)+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/maxPlatform*100)+'%"></div></div><b>'+v+'</b></div>').join('');
-let mealOrder=['🍳 아침','🍚 점심','🌙 저녁','🍪 간식'];
+let mealOrder=['🍳 아침','🍚 점심','🌙 저녁','🍪 간식','🍜 야식'];
 let mealBars=mealOrder.filter(k=>meals[k]).map(k=>'<div class="bar-row"><span>'+esc(k)+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(meals[k]/maxMeal*100)+'%"></div></div><b>'+meals[k]+'</b></div>').join('');
+let menuBars=Object.entries(menus).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v])=>'<div class="bar-row"><span>'+esc(k)+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(v/maxMenu*100)+'%"></div></div><b>'+v+'</b></div>').join('');
 $('statsView').innerHTML=
 '<div class="stats">'+
 '<div class="stat"><b>'+records.length+'</b><span>총 밥친구</span></div>'+
@@ -153,6 +158,8 @@ $('statsView').innerHTML=
 '<div class="card">'+
 '<div class="chart-title" style="margin-top:0">함께한 끼니</div>'+
 (mealBars||'<small>아직 기록이 없어요.</small>')+
+'<div class="chart-title">🍴 함께 먹은 메뉴</div>'+
+(menuBars||'<small>메뉴를 입력한 기록이 아직 없어요.</small>')+
 '<div class="chart-title">매체별 기록</div>'+
 (typeBars||'<small>아직 데이터가 없어요.</small>')+
 '<div class="chart-title">플랫폼별 기록</div>'+
