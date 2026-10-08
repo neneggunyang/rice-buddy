@@ -135,7 +135,11 @@ records.forEach(r=>{
   types[r.type]=(types[r.type]||0)+1;
   if(r.platform) platforms[r.platform]=(platforms[r.platform]||0)+1;
   meals[r.meal]=(meals[r.meal]||0)+1;
-  if(r.menu) menus[r.menu]=(menus[r.menu]||0)+1;
+  if(r.menu){
+    r.menu.split(',').map(x=>x.trim()).filter(Boolean).forEach(menu=>{
+      menus[menu]=(menus[menu]||0)+1;
+    });
+  }
 });
 let top=Object.entries(types).sort((a,b)=>b[1]-a[1])[0];
 let topPlatform=Object.entries(platforms).sort((a,b)=>b[1]-a[1])[0];
